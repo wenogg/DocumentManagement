@@ -1,0 +1,43 @@
+﻿@page "/documents"
+@using DocumentManagement.Core.Documents
+
+<h3>Documents</h3>
+
+<Card>
+    <CardBody>
+            <Field>
+                <FieldLabel>Document Type</FieldLabel>
+                <SelectList TItem="DocumentType"
+                            TValue="string?"
+                            DefaultItemText=""
+                            @bind-SelectedValue="CreateDocumentDto.DocumentTypeId"
+                            Data="@DocumentTypes"
+                            TextField="@((item) => item.Id)"
+                            ValueField="@(item => item.Name)">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </SelectList>
+            </Field>
+
+            <Field>
+                <FieldLabel>File: </FieldLabel>
+                <FileEdit Changed="@OnDocumentChanged" />
+            </Field>
+
+            <p>
+                CreateDocumentDto Name: @CreateDocumentDto.Name <br />
+                CreateDocumentDto Doc type @CreateDocumentDto.DocumentTypeId
+            </p>
+
+            <Button Color="Color.Secondary">
+                Cancel
+            </Button>
+
+            <Button Color="Color.Primary"
+                    Type="@ButtonType.Submit"
+                    PreventDefaultOnSubmit="true" Clicked="SaveDocument">
+                Save
+            </Button>
+    </CardBody>
+</Card>

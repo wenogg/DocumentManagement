@@ -1,4 +1,10 @@
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
+using DocumentManagement.Persistence.Extensions;
+using DocumentManagement.Persistence.Files;
 using DocumentManagement.Web.Components;
+using DocumentManagement.Web.Extensions;
 using DocumentManagement.Workflows.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;
 using Elsa.Server.Hangfire.Extensions;
@@ -6,14 +12,32 @@ using Hangfire;
 using Hangfire.SQLite;
 using NodaTime;
 using NodaTime.Serialization.JsonNet;
+using Storage.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var dbConnectionString = builder.Configuration.GetConnectionString("Sqlite")!;
+
 // Add services to the container.
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddDomainServices();
+builder.Services.Configure<DocumentStorageOptions>(options =>
+    options.BlobStorageFactory = () =>
+        StorageFactory.Blobs.DirectoryFiles(Path.Combine(Environment.CurrentDirectory, "App_Data/Uploads")));
+
+builder.Services.AddDomainPersistence(dbConnectionString);
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var dbConnectionString = builder.Configuration.GetConnectionString("Sqlite")!;
+builder.Services
+    .AddBlazorise( options =>
+    {
+        options.Immediate = true;
+    } )
+    .AddBootstrap5Providers()
+    .AddFontAwesomeIcons();
+
 
 // Hangfire (for background tasks).
 builder.Services

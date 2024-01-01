@@ -185,6 +185,7 @@ _pkginfo.txt
 
 # Others
 ClientBin/
+**/App_Data/*/*
 ~$*
 *~
 *.dbmdl
