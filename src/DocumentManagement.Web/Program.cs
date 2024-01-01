@@ -1,5 +1,5 @@
 using DocumentManagement.Web.Components;
-using Elsa.Persistence.EntityFramework.Core.Extensions;
+using DocumentManagement.Workflows.Extensions;
 using Elsa.Persistence.EntityFramework.Sqlite;
 using Elsa.Server.Hangfire.Extensions;
 using Hangfire;
@@ -32,21 +32,9 @@ builder.Services
         options.ConfigureForElsaDispatchers(sp);
     });
 
-var elsaSection = builder.Configuration.GetSection("Elsa");
-builder.Services
-    .AddElsa(options => options
-        .UseEntityFrameworkPersistence(ef =>
-        {
-            ef.UseSqlite(dbConnectionString);
-            //ef.UseSqlServer(dbConnectionString);
-        })
-        .AddConsoleActivities()
-        .AddHttpActivities(elsaSection.GetSection("Server").Bind)
-        .AddEmailActivities(elsaSection.GetSection("Smtp").Bind)
-
-        // .AddActivitiesFrom<Startup>()
-        // .AddFeatures(features, Configuration)
-    );
+builder.Services.AddElsa(
+    builder.Configuration,
+    ef => ef.UseSqlite(dbConnectionString));
 
 builder.Services
     .AddElsaSwagger()
