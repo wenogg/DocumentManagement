@@ -1,0 +1,109 @@
+{
+  "$id": "1",
+  "definitionId": "c424e8ba111b4c77a7c8638a88cd7ebe",
+  "versionId": "f5d82af8913a4077adac298a9f15d50f",
+  "name": "Get Document",
+  "version": 2,
+  "variables": {
+    "$id": "2",
+    "data": {}
+  },
+  "customAttributes": {
+    "$id": "3",
+    "data": {}
+  },
+  "isSingleton": false,
+  "persistenceBehavior": "WorkflowBurst",
+  "deleteCompletedInstances": false,
+  "isPublished": true,
+  "isLatest": true,
+  "createdAt": "2024-01-01T19:01:21.6821334Z",
+  "activities": [
+    {
+      "$id": "4",
+      "activityId": "5f70931a-f115-419d-9885-0230ee356f94",
+      "type": "GetDocument",
+      "displayName": "Get Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "5",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "6",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "7"
+      }
+    },
+    {
+      "$id": "8",
+      "activityId": "94d3b784-e146-44dd-9896-285bf4e0610c",
+      "type": "WriteHttpResponse",
+      "displayName": "HTTP Response",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "9",
+          "name": "Content",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "10",
+            "Liquid": "The document’s file name is {{ Input.Document.FileName }}"
+          }
+        },
+        {
+          "$id": "11",
+          "name": "ContentType",
+          "expressions": {
+            "$id": "12",
+            "Literal": "text/plain"
+          }
+        },
+        {
+          "$id": "13",
+          "name": "StatusCode",
+          "expressions": {
+            "$id": "14",
+            "Literal": "OK"
+          }
+        },
+        {
+          "$id": "15",
+          "name": "CharSet",
+          "expressions": {
+            "$id": "16",
+            "Literal": "utf-8"
+          }
+        },
+        {
+          "$id": "17",
+          "name": "ResponseHeaders",
+          "expressions": {
+            "$id": "18"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "19"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "$id": "20",
+      "sourceActivityId": "5f70931a-f115-419d-9885-0230ee356f94",
+      "targetActivityId": "94d3b784-e146-44dd-9896-285bf4e0610c",
+      "outcome": "Done"
+    }
+  ],
+  "id": "f5d82af8913a4077adac298a9f15d50f"
+}

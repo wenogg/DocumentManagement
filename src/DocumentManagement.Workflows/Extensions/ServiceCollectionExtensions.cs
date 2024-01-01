@@ -1,4 +1,5 @@
-﻿using DocumentManagement.Workflows.Handlers;
+﻿using DocumentManagement.Workflows.Activities;
+using DocumentManagement.Workflows.Handlers;
 using Elsa;
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Providers.Workflows;
@@ -30,6 +31,7 @@ public static class ServiceCollectionExtensions
                 .UseHangfireDispatchers()
                 .AddHttpActivities(elsaSection.GetSection("Server").Bind)
                 .AddEmailActivities(elsaSection.GetSection("Smtp").Bind)
+                .AddActivitiesFrom<GetDocument>()
             );
 
         // Configure Storage for BlobStorageWorkflowProvider with a directory on disk from where to load workflow definition JSON files from the local "Workflows" folder.

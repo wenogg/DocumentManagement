@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "09493c57-a410-42dc-8b99-ae197a08798b",
+		"name": "DocumentManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19424736"
+	},
+	"item": [
+		{
+			"name": "Get Document",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"correlationId\": \"1e0fddce7e7a4929b07ddabc21d1dd1c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5120/v1/workflows/c424e8ba111b4c77a7c8638a88cd7ebe/execute",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5120",
+					"path": [
+						"v1",
+						"workflows",
+						"c424e8ba111b4c77a7c8638a88cd7ebe",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
