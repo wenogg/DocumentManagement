@@ -60,6 +60,8 @@ builder.Services.AddElsa(
     builder.Configuration,
     ef => ef.UseSqlite(dbConnectionString));
 
+builder.Services.AddWorkflowServices();
+
 builder.Services
     .AddElsaSwagger()
     .AddElsaApiEndpoints();

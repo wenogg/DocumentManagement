@@ -8,14 +8,16 @@ namespace DocumentManagement.Web.Components.Pages.Documents;
 public partial class Documents
 {
     [Inject]
-    private IDocumentTypeStore DocumentTypeStore { get; set; } = default!;
+    private IDocumentTypeStore DocumentTypeStore { get; set; }
 
     [Inject]
-    private IDocumentService DocumentService { get; set; } = default!;
+    private IDocumentService DocumentService { get; set; }
 
     private List<DocumentType> DocumentTypes { get; set; } = [];
 
     private CreateDocumentDto CreateDocumentDto { get; set; } = new();
+
+    private bool ShowUploadSuccess { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,6 +50,9 @@ public partial class Documents
         await stream.WriteAsync(CreateDocumentDto.File);
         stream.Seek(0, SeekOrigin.Begin);
         var document = await DocumentService.SaveDocumentAsync(CreateDocumentDto.Name, stream, CreateDocumentDto.DocumentTypeId);
+
+        ShowUploadSuccess = true;
+        CreateDocumentDto = new CreateDocumentDto();
 
         // return RedirectToPage("FileReceived", new {DocumentId = document.Id});
         //

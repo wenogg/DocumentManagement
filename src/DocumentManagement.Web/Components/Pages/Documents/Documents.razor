@@ -2,34 +2,36 @@
 @using DocumentManagement.Core.Documents
 
 <h3>Documents</h3>
+<Alert Color="Color.Success" Visible="@ShowUploadSuccess">
+    <AlertMessage>Success</AlertMessage>
+    <AlertDescription>File uploaded successfully</AlertDescription>
+</Alert>
 
-<Card>
-    <CardBody>
-            <Field>
-                <FieldLabel>Document Type</FieldLabel>
-                <SelectList TItem="DocumentType"
-                            TValue="string?"
-                            DefaultItemText=""
-                            @bind-SelectedValue="CreateDocumentDto.DocumentTypeId"
-                            Data="@DocumentTypes"
-                            TextField="@((item) => item.Id)"
-                            ValueField="@(item => item.Name)">
-                    <Feedback>
-                        <ValidationError />
-                    </Feedback>
-                </SelectList>
-            </Field>
+<EditForm Model="CreateDocumentDto">
+    <Card>
+        <CardBody>
+            <Fields>
+                <Field ColumnSize="ColumnSize.Is12" Margin="Margin.Is1.FromTop">
+                    <FieldLabel>Document Type</FieldLabel>
+                    <SelectList TItem="DocumentType"
+                                TValue="string"
+                                DefaultItemText=""
+                                @bind-SelectedValue="CreateDocumentDto.DocumentTypeId"
+                                Data="@DocumentTypes"
+                                TextField="@((item) => item.Id)"
+                                ValueField="@(item => item.Name)">
+                        <Feedback>
+                            <ValidationError/>
+                        </Feedback>
+                    </SelectList>
+                </Field>
 
-            <Field>
-                <FieldLabel>File: </FieldLabel>
-                <FileEdit Changed="@OnDocumentChanged" />
-            </Field>
-
-            <p>
-                CreateDocumentDto Name: @CreateDocumentDto.Name <br />
-                CreateDocumentDto Doc type @CreateDocumentDto.DocumentTypeId
-            </p>
-
+                <Field ColumnSize="ColumnSize.Is12" Margin="Margin.Is1.FromTop">
+                    <FileEdit Changed="@OnDocumentChanged"/>
+                </Field>
+            </Fields>
+        </CardBody>
+        <CardFooter>
             <Button Color="Color.Secondary">
                 Cancel
             </Button>
@@ -39,5 +41,6 @@
                     PreventDefaultOnSubmit="true" Clicked="SaveDocument">
                 Save
             </Button>
-    </CardBody>
-</Card>
+        </CardFooter>
+    </Card>
+</EditForm>
