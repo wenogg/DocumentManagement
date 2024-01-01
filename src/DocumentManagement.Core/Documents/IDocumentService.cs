@@ -32,9 +32,10 @@ public class DocumentService(
 
         // Save the document.
         await documentStore.Save(document, cancellationToken);
+        var newDocument = await documentStore.Get(document.Id, cancellationToken);
 
         // Publish a domain event.
-        await mediator.Publish(new NewDocumentReceived(document), cancellationToken);
+        await mediator.Publish(new NewDocumentReceived(newDocument), cancellationToken);
 
         return document;
     }

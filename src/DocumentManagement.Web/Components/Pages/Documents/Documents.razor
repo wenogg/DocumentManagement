@@ -18,8 +18,8 @@
                                 DefaultItemText=""
                                 @bind-SelectedValue="CreateDocumentDto.DocumentTypeId"
                                 Data="@DocumentTypes"
-                                TextField="@((item) => item.Id)"
-                                ValueField="@(item => item.Name)">
+                                TextField="@((item) => item.Name)"
+                                ValueField="@(item => item.Id)">
                         <Feedback>
                             <ValidationError/>
                         </Feedback>

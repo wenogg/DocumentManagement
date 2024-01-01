@@ -53,9 +53,5 @@ public partial class Documents
 
         ShowUploadSuccess = true;
         CreateDocumentDto = new CreateDocumentDto();
-
-        // return RedirectToPage("FileReceived", new {DocumentId = document.Id});
-        //
-        // return Task.CompletedTask;
     }
 }

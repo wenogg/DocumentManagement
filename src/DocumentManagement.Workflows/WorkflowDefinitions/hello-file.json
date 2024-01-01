@@ -1,0 +1,50 @@
+{
+  "$id": "1",
+  "definitionId": "c897aef0a3284a279658471fa2529f40",
+  "versionId": "03c557a03a7740efa148abd6e0b69f7b",
+  "name": "HelloFile",
+  "version": 4,
+  "variables": {
+    "$id": "2",
+    "data": {}
+  },
+  "customAttributes": {
+    "$id": "3",
+    "data": {}
+  },
+  "isSingleton": false,
+  "persistenceBehavior": "WorkflowBurst",
+  "deleteCompletedInstances": false,
+  "isPublished": true,
+  "isLatest": true,
+  "tag": "Change Request",
+  "createdAt": "2024-01-01T18:03:31.851419Z",
+  "activities": [
+    {
+      "$id": "4",
+      "activityId": "dfb7960c-7c7d-444c-a36c-73668a797aa0",
+      "type": "WriteLine",
+      "displayName": "Write Line",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "5",
+          "name": "Text",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "6",
+            "Literal": "Hello File {{ Input }}! ",
+            "Liquid": "Hello File {{ CorrelationId }}!"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "7"
+      }
+    }
+  ],
+  "connections": [],
+  "id": "03c557a03a7740efa148abd6e0b69f7b"
+}

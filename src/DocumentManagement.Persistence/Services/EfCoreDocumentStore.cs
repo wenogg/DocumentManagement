@@ -21,6 +21,8 @@ public class EfCoreDocumentStore(IDbContextFactory<DocumentDbContext> dbContextF
     public async Task<Document?> Get(string id, CancellationToken cancellationToken = default)
     {
         await using var dbContext = await dbContextFactory.CreateDbContextAsync(cancellationToken);
-        return await dbContext.Documents.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return await dbContext.Documents
+            .Include(s => s.DocumentType)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

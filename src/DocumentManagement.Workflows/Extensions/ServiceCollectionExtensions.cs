@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddWorkflowServices(this IServiceCollection services)
     {
-        return services.AddNotificationHandlersFrom<StartHelloFileWorkflow>();
+        return services.AddNotificationHandlersFrom<StartDocumentWorkflows>();
     }
 
     public static IServiceCollection AddElsa(this IServiceCollection services, IConfiguration config, Action<DbContextOptionsBuilder> configureDb)

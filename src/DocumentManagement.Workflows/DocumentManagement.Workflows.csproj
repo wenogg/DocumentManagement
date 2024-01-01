@@ -19,11 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="WorkflowDefinitions\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="WorkflowDefinitions\ping.json">
+      <None Update="WorkflowDefinitions\hello-file.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

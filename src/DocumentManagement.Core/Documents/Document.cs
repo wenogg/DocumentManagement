@@ -6,6 +6,8 @@ public class Document
 
     public string DocumentTypeId { get; set; } = default!;
 
+    public DocumentType DocumentType { get; set; } = default!;
+
     public string FileName { get; set; } = default!;
 
     public DateTime CreatedAt { get; set; }
