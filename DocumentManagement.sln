@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Persiste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.Workflows", "src\DocumentManagement.Workflows\DocumentManagement.Workflows.csproj", "{C8CB8A1B-C80A-43B2-AB86-0B0711FD88DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement.ElsaDashboard.Web", "src\DocumentManagement.ElsaDashboard.Web\DocumentManagement.ElsaDashboard.Web.csproj", "{A74E719E-9967-4CF3-9573-A0EF420DDBEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,11 +34,16 @@ Global
 		{C8CB8A1B-C80A-43B2-AB86-0B0711FD88DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8CB8A1B-C80A-43B2-AB86-0B0711FD88DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8CB8A1B-C80A-43B2-AB86-0B0711FD88DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A74E719E-9967-4CF3-9573-A0EF420DDBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A74E719E-9967-4CF3-9573-A0EF420DDBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A74E719E-9967-4CF3-9573-A0EF420DDBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A74E719E-9967-4CF3-9573-A0EF420DDBEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AF3416B1-2792-4F0C-AC42-588A64A06D89} = {07764359-5195-4D53-BB3E-3F2AAC8D9C8B}
 		{854AFD39-1EB1-4819-9BD2-268DA53D4724} = {07764359-5195-4D53-BB3E-3F2AAC8D9C8B}
 		{73FD0287-488A-485B-8876-91C9923F6D2D} = {07764359-5195-4D53-BB3E-3F2AAC8D9C8B}
 		{C8CB8A1B-C80A-43B2-AB86-0B0711FD88DE} = {07764359-5195-4D53-BB3E-3F2AAC8D9C8B}
+		{A74E719E-9967-4CF3-9573-A0EF420DDBEC} = {07764359-5195-4D53-BB3E-3F2AAC8D9C8B}
 	EndGlobalSection
 EndGlobal

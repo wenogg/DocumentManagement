@@ -1,21 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DocumentManagement.Core\DocumentManagement.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Elsa" Version="2.13.0" />
-      <PackageReference Include="Elsa.Activities.Email" Version="2.13.0" />
       <PackageReference Include="Elsa.Activities.Http" Version="2.13.0" />
+      <PackageReference Include="Elsa.Activities.Temporal.Quartz" Version="2.13.0" />
+      <PackageReference Include="Elsa.Designer.Components.Web" Version="2.13.0" />
       <PackageReference Include="Elsa.Persistence.EntityFramework.Core" Version="2.13.0" />
-      <PackageReference Include="Elsa.Server.Hangfire" Version="2.13.0" />
     </ItemGroup>
 
 </Project>
