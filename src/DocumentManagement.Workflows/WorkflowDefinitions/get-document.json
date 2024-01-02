@@ -1,9 +1,9 @@
 {
   "$id": "1",
   "definitionId": "c424e8ba111b4c77a7c8638a88cd7ebe",
-  "versionId": "f5d82af8913a4077adac298a9f15d50f",
+  "versionId": "f2086cbcb8a948d5ad8543afa5ba5513",
   "name": "Get Document",
-  "version": 2,
+  "version": 5,
   "variables": {
     "$id": "2",
     "data": {}
@@ -17,12 +17,13 @@
   "deleteCompletedInstances": false,
   "isPublished": true,
   "isLatest": true,
-  "createdAt": "2024-01-01T19:01:21.6821334Z",
+  "createdAt": "2024-01-02T03:16:50.9425523Z",
   "activities": [
     {
       "$id": "4",
       "activityId": "5f70931a-f115-419d-9885-0230ee356f94",
       "type": "GetDocument",
+      "name": "GetDocument1",
       "displayName": "Get Document",
       "persistWorkflow": false,
       "loadWorkflowContext": false,
@@ -54,18 +55,20 @@
         {
           "$id": "9",
           "name": "Content",
-          "syntax": "Liquid",
+          "syntax": "JavaScript",
           "expressions": {
             "$id": "10",
-            "Liquid": "The document’s file name is {{ Input.Document.FileName }}"
+            "Liquid": "The document's file name is {{ Activities.GetDocument1.Output.Document.FileName }} and the document's status is {{ Activities.GetDocument1.Output.Document.Status }}",
+            "JavaScript": "input"
           }
         },
         {
           "$id": "11",
           "name": "ContentType",
+          "syntax": "Literal",
           "expressions": {
             "$id": "12",
-            "Literal": "text/plain"
+            "Literal": "application/zip"
           }
         },
         {
@@ -88,22 +91,93 @@
           "$id": "17",
           "name": "ResponseHeaders",
           "expressions": {
-            "$id": "18"
+            "$id": "18",
+            "JavaScript": "{ \\\"Content-Disposition\\\": \\\"attachment; filename=download.zip\\\" }",
+            "Literal": "{ \\\"Content-Disposition\\\": \\\"attachment; filename=download.zip\\\" }"
           }
         }
       ],
       "propertyStorageProviders": {
-        "$id": "19"
+        "$id": "19",
+        "Content": "Transient"
+      }
+    },
+    {
+      "$id": "20",
+      "activityId": "5bf1efcf-8a1c-44a2-b462-04076fc6a1de",
+      "type": "ArchiveDocument",
+      "displayName": "Archive Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "21",
+          "name": "Document",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "22",
+            "JavaScript": "input.Document"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "23"
+      }
+    },
+    {
+      "$id": "24",
+      "activityId": "f811437a-ed48-4391-b8bc-d0b4455c0e98",
+      "type": "ZipFile",
+      "displayName": "Zip File",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "25",
+          "name": "Stream",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "26",
+            "Literal": "activities.GetDocument1.Output().FileStream",
+            "JavaScript": "activities.GetDocument1.Output().FileStream"
+          }
+        },
+        {
+          "$id": "27",
+          "name": "FileName",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "28",
+            "JavaScript": "activities.GetDocument1.Output().Document.FileName"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "29"
       }
     }
   ],
   "connections": [
     {
-      "$id": "20",
+      "$id": "30",
       "sourceActivityId": "5f70931a-f115-419d-9885-0230ee356f94",
+      "targetActivityId": "5bf1efcf-8a1c-44a2-b462-04076fc6a1de",
+      "outcome": "Done"
+    },
+    {
+      "$id": "31",
+      "sourceActivityId": "5bf1efcf-8a1c-44a2-b462-04076fc6a1de",
+      "targetActivityId": "f811437a-ed48-4391-b8bc-d0b4455c0e98",
+      "outcome": "Done"
+    },
+    {
+      "$id": "32",
+      "sourceActivityId": "f811437a-ed48-4391-b8bc-d0b4455c0e98",
       "targetActivityId": "94d3b784-e146-44dd-9896-285bf4e0610c",
       "outcome": "Done"
     }
   ],
-  "id": "f5d82af8913a4077adac298a9f15d50f"
+  "id": "f2086cbcb8a948d5ad8543afa5ba5513"
 }

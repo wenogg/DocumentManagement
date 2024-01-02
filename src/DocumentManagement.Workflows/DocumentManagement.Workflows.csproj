@@ -22,6 +22,9 @@
       <None Update="WorkflowDefinitions\hello-file.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="WorkflowDefinitions\get-document.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
