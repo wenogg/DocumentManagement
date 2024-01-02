@@ -37,7 +37,7 @@ public partial class Documents
     protected override async Task OnInitializedAsync()
     {
         DocumentTypes = (await DocumentTypeStore.List()).ToList();
-        Items = (await DocumentStore.List()).ToList();
+        Items = await DocumentStore.List();
         await base.OnInitializedAsync();
     }
 
@@ -69,6 +69,7 @@ public partial class Documents
 
         ShowUploadSuccess = true;
         CreateDocumentDto = new CreateDocumentDto();
+        Items = await DocumentStore.List();
     }
 
     private async Task ArchiveDocument(Document document)

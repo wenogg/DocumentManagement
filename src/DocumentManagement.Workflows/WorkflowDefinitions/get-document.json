@@ -1,9 +1,9 @@
 {
   "$id": "1",
   "definitionId": "c424e8ba111b4c77a7c8638a88cd7ebe",
-  "versionId": "f2086cbcb8a948d5ad8543afa5ba5513",
+  "versionId": "62d87cf2c7f2485baf0188c83d71e8d4",
   "name": "Get Document",
-  "version": 5,
+  "version": 8,
   "variables": {
     "$id": "2",
     "data": {}
@@ -17,7 +17,7 @@
   "deleteCompletedInstances": false,
   "isPublished": true,
   "isLatest": true,
-  "createdAt": "2024-01-02T03:16:50.9425523Z",
+  "createdAt": "2024-01-02T04:07:10.8219714Z",
   "activities": [
     {
       "$id": "4",
@@ -45,65 +45,6 @@
     },
     {
       "$id": "8",
-      "activityId": "94d3b784-e146-44dd-9896-285bf4e0610c",
-      "type": "WriteHttpResponse",
-      "displayName": "HTTP Response",
-      "persistWorkflow": false,
-      "loadWorkflowContext": false,
-      "saveWorkflowContext": false,
-      "properties": [
-        {
-          "$id": "9",
-          "name": "Content",
-          "syntax": "JavaScript",
-          "expressions": {
-            "$id": "10",
-            "Liquid": "The document's file name is {{ Activities.GetDocument1.Output.Document.FileName }} and the document's status is {{ Activities.GetDocument1.Output.Document.Status }}",
-            "JavaScript": "input"
-          }
-        },
-        {
-          "$id": "11",
-          "name": "ContentType",
-          "syntax": "Literal",
-          "expressions": {
-            "$id": "12",
-            "Literal": "application/zip"
-          }
-        },
-        {
-          "$id": "13",
-          "name": "StatusCode",
-          "expressions": {
-            "$id": "14",
-            "Literal": "OK"
-          }
-        },
-        {
-          "$id": "15",
-          "name": "CharSet",
-          "expressions": {
-            "$id": "16",
-            "Literal": "utf-8"
-          }
-        },
-        {
-          "$id": "17",
-          "name": "ResponseHeaders",
-          "expressions": {
-            "$id": "18",
-            "JavaScript": "{ \\\"Content-Disposition\\\": \\\"attachment; filename=download.zip\\\" }",
-            "Literal": "{ \\\"Content-Disposition\\\": \\\"attachment; filename=download.zip\\\" }"
-          }
-        }
-      ],
-      "propertyStorageProviders": {
-        "$id": "19",
-        "Content": "Transient"
-      }
-    },
-    {
-      "$id": "20",
       "activityId": "5bf1efcf-8a1c-44a2-b462-04076fc6a1de",
       "type": "ArchiveDocument",
       "displayName": "Archive Document",
@@ -112,21 +53,21 @@
       "saveWorkflowContext": false,
       "properties": [
         {
-          "$id": "21",
+          "$id": "9",
           "name": "Document",
           "syntax": "JavaScript",
           "expressions": {
-            "$id": "22",
+            "$id": "10",
             "JavaScript": "input.Document"
           }
         }
       ],
       "propertyStorageProviders": {
-        "$id": "23"
+        "$id": "11"
       }
     },
     {
-      "$id": "24",
+      "$id": "12",
       "activityId": "f811437a-ed48-4391-b8bc-d0b4455c0e98",
       "type": "ZipFile",
       "displayName": "Zip File",
@@ -135,49 +76,104 @@
       "saveWorkflowContext": false,
       "properties": [
         {
-          "$id": "25",
+          "$id": "13",
           "name": "Stream",
           "syntax": "JavaScript",
           "expressions": {
-            "$id": "26",
+            "$id": "14",
             "Literal": "activities.GetDocument1.Output().FileStream",
             "JavaScript": "activities.GetDocument1.Output().FileStream"
           }
         },
         {
-          "$id": "27",
+          "$id": "15",
           "name": "FileName",
           "syntax": "JavaScript",
           "expressions": {
-            "$id": "28",
+            "$id": "16",
             "JavaScript": "activities.GetDocument1.Output().Document.FileName"
           }
         }
       ],
       "propertyStorageProviders": {
-        "$id": "29"
+        "$id": "17"
+      }
+    },
+    {
+      "$id": "18",
+      "activityId": "8ded631e-c6e9-4a87-90f9-f59eefb22e4a",
+      "type": "UpdateBlockchain",
+      "displayName": "Update Blockchain",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "19",
+          "name": "File",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "20",
+            "JavaScript": "input"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "21",
+        "Output": "Default",
+        "File": "Transient"
+      }
+    },
+    {
+      "$id": "22",
+      "activityId": "8d8ec37b-f44b-4fe9-a188-37bd78e5823e",
+      "type": "WriteLine",
+      "displayName": "Write Line",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "23",
+          "name": "Text",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "24",
+            "Liquid": "File signature: {{ Input }}"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "25",
+        "Text": "Default"
       }
     }
   ],
   "connections": [
     {
-      "$id": "30",
+      "$id": "26",
       "sourceActivityId": "5f70931a-f115-419d-9885-0230ee356f94",
       "targetActivityId": "5bf1efcf-8a1c-44a2-b462-04076fc6a1de",
       "outcome": "Done"
     },
     {
-      "$id": "31",
+      "$id": "27",
       "sourceActivityId": "5bf1efcf-8a1c-44a2-b462-04076fc6a1de",
       "targetActivityId": "f811437a-ed48-4391-b8bc-d0b4455c0e98",
       "outcome": "Done"
     },
     {
-      "$id": "32",
+      "$id": "28",
       "sourceActivityId": "f811437a-ed48-4391-b8bc-d0b4455c0e98",
-      "targetActivityId": "94d3b784-e146-44dd-9896-285bf4e0610c",
+      "targetActivityId": "8ded631e-c6e9-4a87-90f9-f59eefb22e4a",
+      "outcome": "Done"
+    },
+    {
+      "$id": "29",
+      "sourceActivityId": "8ded631e-c6e9-4a87-90f9-f59eefb22e4a",
+      "targetActivityId": "8d8ec37b-f44b-4fe9-a188-37bd78e5823e",
       "outcome": "Done"
     }
   ],
-  "id": "f2086cbcb8a948d5ad8543afa5ba5513"
+  "id": "62d87cf2c7f2485baf0188c83d71e8d4"
 }
