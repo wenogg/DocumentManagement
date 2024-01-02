@@ -1,5 +1,7 @@
 ﻿using Blazorise;
 using DocumentManagement.Core.Documents;
+using Elsa.Models;
+using Elsa.Services;
 using Microsoft.AspNetCore.Components;
 
 
@@ -7,13 +9,26 @@ namespace DocumentManagement.Web.Components.Pages.Documents;
 
 public partial class Documents
 {
+    private const string WorkflowName = "Get Document";
+
+    [Inject]
+    private IDocumentStore DocumentStore { get; set; }
+
     [Inject]
     private IDocumentTypeStore DocumentTypeStore { get; set; }
 
     [Inject]
     private IDocumentService DocumentService { get; set; }
 
+    [Inject]
+    private IWorkflowRegistry WorkflowRegistry { get; set; }
+
+    [Inject]
+    private IWorkflowDefinitionDispatcher WorkflowDefinitionDispatcher { get; set; }
+
     private List<DocumentType> DocumentTypes { get; set; } = [];
+
+    private List<Document> Items { get; set; } = [];
 
     private CreateDocumentDto CreateDocumentDto { get; set; } = new();
 
@@ -22,6 +37,7 @@ public partial class Documents
     protected override async Task OnInitializedAsync()
     {
         DocumentTypes = (await DocumentTypeStore.List()).ToList();
+        Items = (await DocumentStore.List()).ToList();
         await base.OnInitializedAsync();
     }
 
@@ -53,5 +69,21 @@ public partial class Documents
 
         ShowUploadSuccess = true;
         CreateDocumentDto = new CreateDocumentDto();
+    }
+
+    private async Task ArchiveDocument(Document document)
+    {
+        // Get our HelloFile workflow.
+        var workflowBlueprint = await WorkflowRegistry.FindByNameAsync(WorkflowName, VersionOptions.Published);
+
+        if (workflowBlueprint == null)
+            return;
+
+        // Dispatch the workflow.
+        var executionDefinition = new ExecuteWorkflowDefinitionRequest(
+            workflowBlueprint.Id,
+            CorrelationId: document.Id,
+            Input: new WorkflowInput(document.Id));
+        await WorkflowDefinitionDispatcher.DispatchAsync(executionDefinition);
     }
 }

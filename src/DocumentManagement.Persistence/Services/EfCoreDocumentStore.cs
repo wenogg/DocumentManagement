@@ -25,4 +25,12 @@ public class EfCoreDocumentStore(IDbContextFactory<DocumentDbContext> dbContextF
             .Include(s => s.DocumentType)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
+
+    public async Task<List<Document>> List(CancellationToken cancellationToken = default)
+    {
+        await using var dbContext = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+        return await dbContext.Documents
+            .Include(s => s.DocumentType)
+            .ToListAsync(cancellationToken);
+    }
 }

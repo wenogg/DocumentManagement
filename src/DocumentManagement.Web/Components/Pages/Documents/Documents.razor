@@ -44,3 +44,54 @@
         </CardFooter>
     </Card>
 </EditForm>
+
+<DataGrid TItem="Document"
+          Data="Items"
+          ShowPager="true"
+          Sortable="true"
+          SortMode="DataGridSortMode.Single"
+          RowSelectable="@(_ => false)"
+          Editable="true"
+          Responsive="true">
+    <DataGridColumns>
+        <DataGridColumn TItem="Document"
+                        Field="FileName"
+                        Caption="File Name">
+        </DataGridColumn>
+
+        <DataGridColumn TItem="Document"
+                        Field="DocumentType"
+                        Caption="Type">
+            <DisplayTemplate>
+                @context.DocumentType.Name
+            </DisplayTemplate>
+        </DataGridColumn>
+
+        <DataGridColumn TItem="Document"
+                        Field="Status"
+                        Caption="Status">
+            <DisplayTemplate>
+                @context.Status.ToString()
+            </DisplayTemplate>
+        </DataGridColumn>
+
+        <DataGridColumn TItem="Document"
+                        Field="Status"
+                        Caption="Action">
+            <DisplayTemplate>
+                @if (context.Status == DocumentStatus.New)
+                {
+                    <Button Color="Color.Primary" Clicked="@(() => ArchiveDocument(context))">Approve</Button>
+                }
+            </DisplayTemplate>
+        </DataGridColumn>
+
+
+    </DataGridColumns>
+    <LoadingTemplate>
+        <PageProgress Visible="true" Color="Color.Info"></PageProgress>
+    </LoadingTemplate>
+    <EmptyTemplate>
+        <div>No cards found</div>
+    </EmptyTemplate>
+</DataGrid>
