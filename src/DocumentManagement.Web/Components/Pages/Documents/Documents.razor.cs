@@ -92,13 +92,8 @@ public partial class Documents
         await WorkflowDefinitionDispatcher.DispatchAsync(executionDefinition);
     }
 
-    private async Task ApproveRequest(Document document)
+    private async Task ApplyTransition(Document document, string transition)
     {
-        await WorkflowSignaler.TriggerSignalAsync(correlationId: document.Id, signal: "Approve");
-    }
-
-    private async Task RejectRequest(Document document)
-    {
-        await WorkflowSignaler.TriggerSignalAsync(correlationId: document.Id, signal: "Reject");
+        await WorkflowSignaler.TriggerSignalAsync(correlationId: document.Id, signal: transition);
     }
 }

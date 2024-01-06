@@ -6,5 +6,8 @@ public enum DocumentStatus
     Archived,
     PendingApproval,
     Approved,
-    Rejected
+    Rejected,
+    PendingActivation,
+    Activated,
+    ActivationCancelled
 }

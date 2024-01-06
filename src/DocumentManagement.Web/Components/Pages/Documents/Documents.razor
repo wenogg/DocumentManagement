@@ -86,9 +86,16 @@
 
                 @if (context.Status == DocumentStatus.PendingApproval)
                 {
-                    <Button Color="Color.Primary" Clicked="@(() => ApproveRequest(context))">Approve</Button>
-                    <Button Color="Color.Primary" Clicked="@(() => RejectRequest(context))">Deny</Button>
+                    <Button Color="Color.Primary" Clicked="@(() => ApplyTransition(context, "Approve"))">Approve</Button>
+                    <Button Color="Color.Primary" Clicked="@(() => ApplyTransition(context, "Reject"))">Deny</Button>
                 }
+
+                @if (context.Status == DocumentStatus.PendingActivation)
+                {
+                    <Button Color="Color.Primary" Clicked="@(() => ApplyTransition(context, "Valid"))">Activate</Button>
+                    <Button Color="Color.Primary" Clicked="@(() => ApplyTransition(context, "Fake"))">Reject</Button>
+                }
+
             </DisplayTemplate>
         </DataGridColumn>
 

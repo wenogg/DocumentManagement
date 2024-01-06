@@ -1,0 +1,540 @@
+{
+  "$id": "1",
+  "definitionId": "6bf923bfb6f940f99bfaa8449418cf11",
+  "versionId": "25888744911c4e12a8f14423bfd012e2",
+  "name": "Identity Verification",
+  "displayName": "Identity Verification",
+  "version": 3,
+  "variables": {
+    "$id": "2",
+    "data": {}
+  },
+  "customAttributes": {
+    "$id": "3",
+    "data": {}
+  },
+  "isSingleton": false,
+  "persistenceBehavior": "WorkflowBurst",
+  "deleteCompletedInstances": false,
+  "isPublished": true,
+  "isLatest": true,
+  "tag": "Identity Verification",
+  "createdAt": "2024-01-06T19:53:51.642803Z",
+  "activities": [
+    {
+      "$id": "4",
+      "activityId": "a54393e5-9bbb-46ea-bc49-68db60f57a5d",
+      "type": "GetDocument",
+      "name": "GetDocumentActivity",
+      "displayName": "Get Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "5",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "6",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "7"
+      }
+    },
+    {
+      "$id": "8",
+      "activityId": "09e1fba8-73cf-454c-9d90-872530075277",
+      "type": "SendEmail",
+      "displayName": "Send Email",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "9",
+          "name": "From",
+          "expressions": {
+            "$id": "10",
+            "Literal": "test@acme.com"
+          }
+        },
+        {
+          "$id": "11",
+          "name": "To",
+          "expressions": {
+            "$id": "12",
+            "Json": "[\"hr@acme.com\"]"
+          }
+        },
+        {
+          "$id": "13",
+          "name": "Subject",
+          "expressions": {
+            "$id": "14",
+            "Literal": "Please review this user activation request"
+          }
+        },
+        {
+          "$id": "15",
+          "name": "Attachments",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "16",
+            "JavaScript": "const fileName = input.Document.FileName;\r\nconst contentType = contentTypeFromFileName(fileName);\r\nconst attachment = new EmailAttachment(input.FileStream, fileName, contentType);\r\n\r\nreturn attachment;"
+          }
+        },
+        {
+          "$id": "17",
+          "name": "Body",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "18",
+            "JavaScript": "user activation request",
+            "Liquid": "<p>Please review attached user activation request.</p>\r\n\r\n<a href=\"{{ \"Approve\" | signal_url }}\">Appove</a> or <a href=\"{{ \"Reject\" | signal_url }}\">Reject</a>\r\n"
+          }
+        },
+        {
+          "$id": "19",
+          "name": "Cc",
+          "expressions": {
+            "$id": "20"
+          }
+        },
+        {
+          "$id": "21",
+          "name": "Bcc",
+          "expressions": {
+            "$id": "22"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "23"
+      }
+    },
+    {
+      "$id": "24",
+      "activityId": "ff1fac3d-f7d5-4dfd-9be0-0f51b0af293a",
+      "type": "Fork",
+      "displayName": "Fork",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "25",
+          "name": "Branches",
+          "expressions": {
+            "$id": "26",
+            "Json": "[\"Valid\",\"Fake\"]"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "27"
+      }
+    },
+    {
+      "$id": "28",
+      "activityId": "7b34c2a3-b398-4f42-aa6f-9f75659824da",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Change Document Status",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "29",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "30",
+            "Literal": "correlationId",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "31",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "32",
+            "Literal": "PendingActivation"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "33"
+      }
+    },
+    {
+      "$id": "34",
+      "activityId": "4d7f1441-39fb-468e-a490-14c7ac75b802",
+      "type": "SignalReceived",
+      "displayName": "Await Valid",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "35",
+          "name": "Signal",
+          "expressions": {
+            "$id": "36",
+            "Literal": "Valid"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "37"
+      }
+    },
+    {
+      "$id": "38",
+      "activityId": "7846a03a-2303-40e1-8b47-6a8b1cdb63b4",
+      "type": "SignalReceived",
+      "displayName": "Await Fake",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "39",
+          "name": "Signal",
+          "expressions": {
+            "$id": "40",
+            "Literal": "Fake"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "41"
+      }
+    },
+    {
+      "$id": "42",
+      "activityId": "d8275a5a-39e8-4a65-b65a-77e73a1ec7ad",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Set Activation Rejected",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "43",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "44",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "45",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "46",
+            "Literal": "ActivationCancelled"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "47"
+      }
+    },
+    {
+      "$id": "48",
+      "activityId": "b8bdaec0-0e23-4c7c-8c39-b0c62a9a066a",
+      "type": "WriteLine",
+      "displayName": "Reject",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "49",
+          "name": "Text",
+          "expressions": {
+            "$id": "50",
+            "Literal": "Inform the requester that the activation request was denied."
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "51"
+      }
+    },
+    {
+      "$id": "52",
+      "activityId": "f1b19127-673f-493d-9e65-689c06d3189f",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Set Activation Approved",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "53",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "54",
+            "Literal": "correlationId",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "55",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "56",
+            "Literal": "Activated"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "57"
+      }
+    },
+    {
+      "$id": "58",
+      "activityId": "455726d2-9a94-422a-ab4e-97a521618658",
+      "type": "WriteLine",
+      "displayName": "Approve",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "59",
+          "name": "Text",
+          "expressions": {
+            "$id": "60",
+            "Literal": "Inform the requester that the activation request was approved."
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "61"
+      }
+    },
+    {
+      "$id": "62",
+      "activityId": "2cc364d1-d5d2-44f8-aeef-88ba55ef8c2e",
+      "type": "GetDocument",
+      "displayName": "Get Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "63",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "64",
+            "Literal": "correlationId",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "65"
+      }
+    },
+    {
+      "$id": "66",
+      "activityId": "be2d2cef-d144-4062-8b39-0cf7e1eb55e8",
+      "type": "UpdateBlockchain",
+      "displayName": "Update Blockchain",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "67",
+          "name": "File",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "68",
+            "JavaScript": "input.FileStream"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "69"
+      }
+    },
+    {
+      "$id": "70",
+      "activityId": "1bf23cd7-4599-4997-8aea-705698097d21",
+      "type": "Join",
+      "displayName": "Join",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "71",
+          "name": "EagerJoin",
+          "expressions": {
+            "$id": "72"
+          }
+        },
+        {
+          "$id": "73",
+          "name": "Mode",
+          "expressions": {
+            "$id": "74",
+            "Literal": "WaitAny"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "75"
+      }
+    },
+    {
+      "$id": "76",
+      "activityId": "b53be8c2-44ab-4ae5-b728-9fce209b519f",
+      "type": "GetDocument",
+      "displayName": "Get Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "77",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "78",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "79"
+      }
+    },
+    {
+      "$id": "80",
+      "activityId": "acf22ec5-152b-4202-a692-e8ce2573fe05",
+      "type": "WriteLine",
+      "displayName": "Write Line",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "81",
+          "name": "Text",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "82",
+            "Liquid": "Activation request complete - status: {{ Input.Document.Status }}"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "83"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "$id": "84",
+      "sourceActivityId": "a54393e5-9bbb-46ea-bc49-68db60f57a5d",
+      "targetActivityId": "09e1fba8-73cf-454c-9d90-872530075277",
+      "outcome": "Done"
+    },
+    {
+      "$id": "85",
+      "sourceActivityId": "09e1fba8-73cf-454c-9d90-872530075277",
+      "targetActivityId": "ff1fac3d-f7d5-4dfd-9be0-0f51b0af293a",
+      "outcome": "Done"
+    },
+    {
+      "$id": "86",
+      "sourceActivityId": "7b34c2a3-b398-4f42-aa6f-9f75659824da",
+      "targetActivityId": "a54393e5-9bbb-46ea-bc49-68db60f57a5d",
+      "outcome": "Done"
+    },
+    {
+      "$id": "87",
+      "sourceActivityId": "ff1fac3d-f7d5-4dfd-9be0-0f51b0af293a",
+      "targetActivityId": "4d7f1441-39fb-468e-a490-14c7ac75b802",
+      "outcome": "Valid"
+    },
+    {
+      "$id": "88",
+      "sourceActivityId": "ff1fac3d-f7d5-4dfd-9be0-0f51b0af293a",
+      "targetActivityId": "7846a03a-2303-40e1-8b47-6a8b1cdb63b4",
+      "outcome": "Fake"
+    },
+    {
+      "$id": "89",
+      "sourceActivityId": "7846a03a-2303-40e1-8b47-6a8b1cdb63b4",
+      "targetActivityId": "d8275a5a-39e8-4a65-b65a-77e73a1ec7ad",
+      "outcome": "Done"
+    },
+    {
+      "$id": "90",
+      "sourceActivityId": "d8275a5a-39e8-4a65-b65a-77e73a1ec7ad",
+      "targetActivityId": "b8bdaec0-0e23-4c7c-8c39-b0c62a9a066a",
+      "outcome": "Done"
+    },
+    {
+      "$id": "91",
+      "sourceActivityId": "4d7f1441-39fb-468e-a490-14c7ac75b802",
+      "targetActivityId": "f1b19127-673f-493d-9e65-689c06d3189f",
+      "outcome": "Done"
+    },
+    {
+      "$id": "92",
+      "sourceActivityId": "f1b19127-673f-493d-9e65-689c06d3189f",
+      "targetActivityId": "455726d2-9a94-422a-ab4e-97a521618658",
+      "outcome": "Done"
+    },
+    {
+      "$id": "93",
+      "sourceActivityId": "455726d2-9a94-422a-ab4e-97a521618658",
+      "targetActivityId": "2cc364d1-d5d2-44f8-aeef-88ba55ef8c2e",
+      "outcome": "Done"
+    },
+    {
+      "$id": "94",
+      "sourceActivityId": "2cc364d1-d5d2-44f8-aeef-88ba55ef8c2e",
+      "targetActivityId": "be2d2cef-d144-4062-8b39-0cf7e1eb55e8",
+      "outcome": "Done"
+    },
+    {
+      "$id": "95",
+      "sourceActivityId": "be2d2cef-d144-4062-8b39-0cf7e1eb55e8",
+      "targetActivityId": "1bf23cd7-4599-4997-8aea-705698097d21",
+      "outcome": "Done"
+    },
+    {
+      "$id": "96",
+      "sourceActivityId": "b8bdaec0-0e23-4c7c-8c39-b0c62a9a066a",
+      "targetActivityId": "1bf23cd7-4599-4997-8aea-705698097d21",
+      "outcome": "Done"
+    },
+    {
+      "$id": "97",
+      "sourceActivityId": "1bf23cd7-4599-4997-8aea-705698097d21",
+      "targetActivityId": "b53be8c2-44ab-4ae5-b728-9fce209b519f",
+      "outcome": "Done"
+    },
+    {
+      "$id": "98",
+      "sourceActivityId": "b53be8c2-44ab-4ae5-b728-9fce209b519f",
+      "targetActivityId": "acf22ec5-152b-4202-a692-e8ce2573fe05",
+      "outcome": "Done"
+    }
+  ],
+  "id": "25888744911c4e12a8f14423bfd012e2"
+}
