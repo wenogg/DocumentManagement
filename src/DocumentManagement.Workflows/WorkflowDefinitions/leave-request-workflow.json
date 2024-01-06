@@ -1,0 +1,513 @@
+{
+  "$id": "1",
+  "definitionId": "23b344297b664d2dba7586d60590ceaf",
+  "versionId": "e005c6f8a41f4049b862e86692a59fd7",
+  "name": "LeaveRequestWorkflow",
+  "displayName": "Leave Request Workflow",
+  "version": 4,
+  "variables": {
+    "$id": "2",
+    "data": {}
+  },
+  "customAttributes": {
+    "$id": "3",
+    "data": {}
+  },
+  "isSingleton": false,
+  "persistenceBehavior": "WorkflowBurst",
+  "deleteCompletedInstances": false,
+  "isPublished": true,
+  "isLatest": true,
+  "tag": "Leave Request",
+  "createdAt": "2024-01-06T17:00:37.1988135Z",
+  "activities": [
+    {
+      "$id": "4",
+      "activityId": "33fbe383-b052-4548-a31a-c1873b498d39",
+      "type": "GetDocument",
+      "name": "GetDocumentActivity",
+      "displayName": "Get Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "5",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "6",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "7"
+      }
+    },
+    {
+      "$id": "8",
+      "activityId": "cb22682b-1e18-416c-bdb6-8e5e565b2cd1",
+      "type": "SendEmail",
+      "displayName": "Send Email",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "9",
+          "name": "From",
+          "expressions": {
+            "$id": "10",
+            "Literal": "test@acme.com"
+          }
+        },
+        {
+          "$id": "11",
+          "name": "To",
+          "expressions": {
+            "$id": "12",
+            "Json": "[\"hr@acme.com\"]"
+          }
+        },
+        {
+          "$id": "13",
+          "name": "Subject",
+          "expressions": {
+            "$id": "14",
+            "Literal": "Please review this leave request"
+          }
+        },
+        {
+          "$id": "15",
+          "name": "Attachments",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "16",
+            "JavaScript": "const fileName = input.Document.FileName;\r\nconst contentType = contentTypeFromFileName(fileName);\r\nconst attachment = new EmailAttachment(input.FileStream, fileName, contentType);\r\n\r\nreturn attachment;"
+          }
+        },
+        {
+          "$id": "17",
+          "name": "Body",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "18",
+            "Liquid": "<p>Please review attached leave request.</p>\r\n\r\n<a href=\"{{ \"Approve\" | signal_url }}\">Appove</a> or <a href=\"{{ \"Reject\" | signal_url }}\">Reject</a>\r\n"
+          }
+        },
+        {
+          "$id": "19",
+          "name": "Cc",
+          "expressions": {
+            "$id": "20"
+          }
+        },
+        {
+          "$id": "21",
+          "name": "Bcc",
+          "expressions": {
+            "$id": "22"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "23"
+      }
+    },
+    {
+      "$id": "24",
+      "activityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
+      "type": "Fork",
+      "name": "Fork1",
+      "displayName": "Fork",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "25",
+          "name": "Branches",
+          "expressions": {
+            "$id": "26",
+            "Json": "[\"Approved\",\"Rejected\"]"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "27"
+      }
+    },
+    {
+      "$id": "28",
+      "activityId": "57bb4d74-8059-4fa9-ab50-109b32bdf577",
+      "type": "SignalReceived",
+      "displayName": "Signal Received",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "29",
+          "name": "Signal",
+          "expressions": {
+            "$id": "30",
+            "Literal": "Approve"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "31"
+      }
+    },
+    {
+      "$id": "32",
+      "activityId": "f07137ee-b8c3-4e56-a0b9-c82d10ae9b28",
+      "type": "WriteLine",
+      "displayName": "Approve",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "33",
+          "name": "Text",
+          "expressions": {
+            "$id": "34",
+            "Literal": "Inform the requester that the leave request was approved."
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "35"
+      }
+    },
+    {
+      "$id": "36",
+      "activityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
+      "type": "Join",
+      "name": "Join1",
+      "displayName": "Join",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "37",
+          "name": "EagerJoin",
+          "expressions": {
+            "$id": "38"
+          }
+        },
+        {
+          "$id": "39",
+          "name": "Mode",
+          "expressions": {
+            "$id": "40",
+            "Literal": "WaitAny"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "41"
+      }
+    },
+    {
+      "$id": "42",
+      "activityId": "e066fb1c-191b-475d-87ca-e40cd30070b8",
+      "type": "SignalReceived",
+      "displayName": "Signal Received",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "43",
+          "name": "Signal",
+          "expressions": {
+            "$id": "44",
+            "Literal": "Reject"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "45"
+      }
+    },
+    {
+      "$id": "46",
+      "activityId": "db31f37e-7750-4750-bc9e-59544de31227",
+      "type": "WriteLine",
+      "displayName": "Reject",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "47",
+          "name": "Text",
+          "expressions": {
+            "$id": "48",
+            "Literal": "Inform the requester that the leave request was denied."
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "49"
+      }
+    },
+    {
+      "$id": "50",
+      "activityId": "d996bc3d-371d-4910-95ee-c4ac031972cd",
+      "type": "GetDocument",
+      "name": "GetDocumentAfterApproval",
+      "displayName": "Get Document",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "51",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "52",
+            "Literal": "correlationId",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "53"
+      }
+    },
+    {
+      "$id": "54",
+      "activityId": "56a51f00-453c-4d38-be34-c3cabc1d8291",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Set Document Pending Approval",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "55",
+          "name": "Document",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "56",
+            "Literal": "correlationId",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "57",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "58",
+            "Literal": "PendingApproval"
+          }
+        },
+        {
+          "$id": "59",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "60",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "61"
+      }
+    },
+    {
+      "$id": "62",
+      "activityId": "62493ef5-be53-4339-9e18-fc315ce867a8",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Set Document Approved",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "63",
+          "name": "Document",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "64",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "65",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "66",
+            "Literal": "Approved"
+          }
+        },
+        {
+          "$id": "67",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "68",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "69"
+      }
+    },
+    {
+      "$id": "70",
+      "activityId": "91ed5f5c-ea88-42a8-b0b3-ffebe03dc4a5",
+      "type": "ChangeDocumentStatus",
+      "name": "",
+      "displayName": "Set Document Rejected",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "71",
+          "name": "Document",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "72",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "73",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "74",
+            "Literal": "Rejected"
+          }
+        },
+        {
+          "$id": "75",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "76",
+            "JavaScript": "correlationId"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "77"
+      }
+    },
+    {
+      "$id": "78",
+      "activityId": "851e7677-c341-42d9-a862-fef3a94a1bff",
+      "type": "WriteLine",
+      "displayName": "Write Line",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "79",
+          "name": "Text",
+          "syntax": "Liquid",
+          "expressions": {
+            "$id": "80",
+            "Literal": "GetDocumentAfterApproval/",
+            "JavaScript": "",
+            "Liquid": "Change request complete - status: {{ Input.Document.Status }}"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "81"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "$id": "82",
+      "sourceActivityId": "33fbe383-b052-4548-a31a-c1873b498d39",
+      "targetActivityId": "cb22682b-1e18-416c-bdb6-8e5e565b2cd1",
+      "outcome": "Done"
+    },
+    {
+      "$id": "83",
+      "sourceActivityId": "cb22682b-1e18-416c-bdb6-8e5e565b2cd1",
+      "targetActivityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
+      "outcome": "Done"
+    },
+    {
+      "$id": "84",
+      "sourceActivityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
+      "targetActivityId": "57bb4d74-8059-4fa9-ab50-109b32bdf577",
+      "outcome": "Approved"
+    },
+    {
+      "$id": "85",
+      "sourceActivityId": "f07137ee-b8c3-4e56-a0b9-c82d10ae9b28",
+      "targetActivityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
+      "outcome": "Done"
+    },
+    {
+      "$id": "86",
+      "sourceActivityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
+      "targetActivityId": "e066fb1c-191b-475d-87ca-e40cd30070b8",
+      "outcome": "Rejected"
+    },
+    {
+      "$id": "87",
+      "sourceActivityId": "db31f37e-7750-4750-bc9e-59544de31227",
+      "targetActivityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
+      "outcome": "Done"
+    },
+    {
+      "$id": "88",
+      "sourceActivityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
+      "targetActivityId": "d996bc3d-371d-4910-95ee-c4ac031972cd",
+      "outcome": "Done"
+    },
+    {
+      "$id": "89",
+      "sourceActivityId": "56a51f00-453c-4d38-be34-c3cabc1d8291",
+      "targetActivityId": "33fbe383-b052-4548-a31a-c1873b498d39",
+      "outcome": "Done"
+    },
+    {
+      "$id": "90",
+      "sourceActivityId": "57bb4d74-8059-4fa9-ab50-109b32bdf577",
+      "targetActivityId": "62493ef5-be53-4339-9e18-fc315ce867a8",
+      "outcome": "Done"
+    },
+    {
+      "$id": "91",
+      "sourceActivityId": "62493ef5-be53-4339-9e18-fc315ce867a8",
+      "targetActivityId": "f07137ee-b8c3-4e56-a0b9-c82d10ae9b28",
+      "outcome": "Done"
+    },
+    {
+      "$id": "92",
+      "sourceActivityId": "e066fb1c-191b-475d-87ca-e40cd30070b8",
+      "targetActivityId": "91ed5f5c-ea88-42a8-b0b3-ffebe03dc4a5",
+      "outcome": "Done"
+    },
+    {
+      "$id": "93",
+      "sourceActivityId": "91ed5f5c-ea88-42a8-b0b3-ffebe03dc4a5",
+      "targetActivityId": "db31f37e-7750-4750-bc9e-59544de31227",
+      "outcome": "Done"
+    },
+    {
+      "$id": "94",
+      "sourceActivityId": "d996bc3d-371d-4910-95ee-c4ac031972cd",
+      "targetActivityId": "851e7677-c341-42d9-a862-fef3a94a1bff",
+      "outcome": "Done"
+    }
+  ],
+  "id": "e005c6f8a41f4049b862e86692a59fd7"
+}

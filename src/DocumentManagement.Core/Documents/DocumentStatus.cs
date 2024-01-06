@@ -3,5 +3,8 @@
 public enum DocumentStatus
 {
     New,
-    Archived
+    Archived,
+    PendingApproval,
+    Approved,
+    Rejected
 }

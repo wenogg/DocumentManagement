@@ -83,6 +83,12 @@
                 {
                     <Button Color="Color.Primary" Clicked="@(() => ArchiveDocument(context))">Approve</Button>
                 }
+
+                @if (context.Status == DocumentStatus.PendingApproval)
+                {
+                    <Button Color="Color.Primary" Clicked="@(() => ApproveRequest(context))">Approve</Button>
+                    <Button Color="Color.Primary" Clicked="@(() => RejectRequest(context))">Deny</Button>
+                }
             </DisplayTemplate>
         </DataGridColumn>
 

@@ -16,6 +16,7 @@
       <PackageReference Include="Elsa.Activities.Http" Version="2.13.0" />
       <PackageReference Include="Elsa.Persistence.EntityFramework.Core" Version="2.13.0" />
       <PackageReference Include="Elsa.Server.Hangfire" Version="2.13.0" />
+      <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>

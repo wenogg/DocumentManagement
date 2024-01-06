@@ -1,5 +1,6 @@
 ﻿using Blazorise;
 using DocumentManagement.Core.Documents;
+using Elsa.Activities.Signaling.Services;
 using Elsa.Models;
 using Elsa.Services;
 using Microsoft.AspNetCore.Components;
@@ -25,6 +26,9 @@ public partial class Documents
 
     [Inject]
     private IWorkflowDefinitionDispatcher WorkflowDefinitionDispatcher { get; set; }
+
+    [Inject]
+    private ISignaler WorkflowSignaler { get; set; }
 
     private List<DocumentType> DocumentTypes { get; set; } = [];
 
@@ -86,5 +90,15 @@ public partial class Documents
             CorrelationId: document.Id,
             Input: new WorkflowInput(document.Id));
         await WorkflowDefinitionDispatcher.DispatchAsync(executionDefinition);
+    }
+
+    private async Task ApproveRequest(Document document)
+    {
+        await WorkflowSignaler.TriggerSignalAsync(correlationId: document.Id, signal: "Approve");
+    }
+
+    private async Task RejectRequest(Document document)
+    {
+        await WorkflowSignaler.TriggerSignalAsync(correlationId: document.Id, signal: "Reject");
     }
 }
