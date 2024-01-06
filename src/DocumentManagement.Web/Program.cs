@@ -6,6 +6,7 @@ using DocumentManagement.Persistence.Files;
 using DocumentManagement.Web.Components;
 using DocumentManagement.Web.Extensions;
 using DocumentManagement.Workflows.Extensions;
+using Elsa;
 using Elsa.Persistence.EntityFramework.Sqlite;
 using Elsa.Server.Hangfire.Extensions;
 using Hangfire;
@@ -61,6 +62,7 @@ builder.Services.AddElsa(
     ef => ef.UseSqlite(dbConnectionString));
 
 builder.Services.AddWorkflowServices();
+builder.Services.AddNotificationHandlersFrom<Program>();
 
 builder.Services
     .AddElsaSwagger()
