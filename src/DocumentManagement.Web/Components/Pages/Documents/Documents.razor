@@ -96,6 +96,13 @@
                     <Button Color="Color.Primary" Clicked="@(() => ApplyTransition(context, "Fake"))">Reject</Button>
                 }
 
+                @if (context.Actions.Length > 0)
+                {
+                    foreach (var action in context.Actions)
+                    {
+                        <Button Margin="Margin.Is1.FromEnd" Color="Color.Primary" Clicked="@(() => SendUserAction(context, action))">@action</Button>
+                    }
+                }
             </DisplayTemplate>
         </DataGridColumn>
 

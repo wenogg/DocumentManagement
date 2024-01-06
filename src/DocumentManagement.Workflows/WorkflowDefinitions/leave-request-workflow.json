@@ -1,10 +1,10 @@
 {
   "$id": "1",
   "definitionId": "23b344297b664d2dba7586d60590ceaf",
-  "versionId": "e005c6f8a41f4049b862e86692a59fd7",
+  "versionId": "ba69622b7c0d47c591f694433cbd7d74",
   "name": "LeaveRequestWorkflow",
   "displayName": "Leave Request Workflow",
-  "version": 4,
+  "version": 7,
   "variables": {
     "$id": "2",
     "data": {}
@@ -19,7 +19,7 @@
   "isPublished": true,
   "isLatest": true,
   "tag": "Leave Request",
-  "createdAt": "2024-01-06T17:00:37.1988135Z",
+  "createdAt": "2024-01-06T20:46:25.5288881Z",
   "activities": [
     {
       "$id": "4",
@@ -283,31 +283,39 @@
     },
     {
       "$id": "54",
-      "activityId": "56a51f00-453c-4d38-be34-c3cabc1d8291",
-      "type": "ChangeDocumentStatus",
-      "displayName": "Set Document Pending Approval",
+      "activityId": "851e7677-c341-42d9-a862-fef3a94a1bff",
+      "type": "WriteLine",
+      "displayName": "Write Line",
       "persistWorkflow": false,
       "loadWorkflowContext": false,
       "saveWorkflowContext": false,
       "properties": [
         {
           "$id": "55",
-          "name": "Document",
-          "syntax": "JavaScript",
+          "name": "Text",
+          "syntax": "Liquid",
           "expressions": {
             "$id": "56",
-            "Literal": "correlationId",
-            "JavaScript": "correlationId"
+            "Literal": "GetDocumentAfterApproval/",
+            "JavaScript": "",
+            "Liquid": "Change request complete - status: {{ Input.Document.Status }}"
           }
-        },
-        {
-          "$id": "57",
-          "name": "DocumentStatus",
-          "expressions": {
-            "$id": "58",
-            "Literal": "PendingApproval"
-          }
-        },
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "57"
+      }
+    },
+    {
+      "$id": "58",
+      "activityId": "b7659da7-b911-4481-ab12-8e925db71a33",
+      "type": "ChangeDocumentStatus",
+      "name": "Set Document Pending Approval",
+      "displayName": "Set Document Pending Approval",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
         {
           "$id": "59",
           "name": "DocumentId",
@@ -316,15 +324,23 @@
             "$id": "60",
             "JavaScript": "correlationId"
           }
+        },
+        {
+          "$id": "61",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "62",
+            "Literal": "PendingApproval"
+          }
         }
       ],
       "propertyStorageProviders": {
-        "$id": "61"
+        "$id": "63"
       }
     },
     {
-      "$id": "62",
-      "activityId": "62493ef5-be53-4339-9e18-fc315ce867a8",
+      "$id": "64",
+      "activityId": "8d2b250b-9989-42fe-9a07-1ec163caaf75",
       "type": "ChangeDocumentStatus",
       "displayName": "Set Document Approved",
       "persistWorkflow": false,
@@ -332,29 +348,20 @@
       "saveWorkflowContext": false,
       "properties": [
         {
-          "$id": "63",
-          "name": "Document",
+          "$id": "65",
+          "name": "DocumentId",
           "syntax": "JavaScript",
           "expressions": {
-            "$id": "64",
-            "JavaScript": "correlationId"
-          }
-        },
-        {
-          "$id": "65",
-          "name": "DocumentStatus",
-          "expressions": {
             "$id": "66",
-            "Literal": "Approved"
+            "JavaScript": "correlationId"
           }
         },
         {
           "$id": "67",
-          "name": "DocumentId",
-          "syntax": "JavaScript",
+          "name": "DocumentStatus",
           "expressions": {
             "$id": "68",
-            "JavaScript": "correlationId"
+            "Literal": "Approved"
           }
         }
       ],
@@ -364,9 +371,8 @@
     },
     {
       "$id": "70",
-      "activityId": "91ed5f5c-ea88-42a8-b0b3-ffebe03dc4a5",
+      "activityId": "a6a16bed-962b-4dde-8eca-5ba4f4e686f2",
       "type": "ChangeDocumentStatus",
-      "name": "",
       "displayName": "Set Document Rejected",
       "persistWorkflow": false,
       "loadWorkflowContext": false,
@@ -374,7 +380,7 @@
       "properties": [
         {
           "$id": "71",
-          "name": "Document",
+          "name": "DocumentId",
           "syntax": "JavaScript",
           "expressions": {
             "$id": "72",
@@ -388,126 +394,92 @@
             "$id": "74",
             "Literal": "Rejected"
           }
-        },
-        {
-          "$id": "75",
-          "name": "DocumentId",
-          "syntax": "JavaScript",
-          "expressions": {
-            "$id": "76",
-            "JavaScript": "correlationId"
-          }
         }
       ],
       "propertyStorageProviders": {
-        "$id": "77"
-      }
-    },
-    {
-      "$id": "78",
-      "activityId": "851e7677-c341-42d9-a862-fef3a94a1bff",
-      "type": "WriteLine",
-      "displayName": "Write Line",
-      "persistWorkflow": false,
-      "loadWorkflowContext": false,
-      "saveWorkflowContext": false,
-      "properties": [
-        {
-          "$id": "79",
-          "name": "Text",
-          "syntax": "Liquid",
-          "expressions": {
-            "$id": "80",
-            "Literal": "GetDocumentAfterApproval/",
-            "JavaScript": "",
-            "Liquid": "Change request complete - status: {{ Input.Document.Status }}"
-          }
-        }
-      ],
-      "propertyStorageProviders": {
-        "$id": "81"
+        "$id": "75"
       }
     }
   ],
   "connections": [
     {
-      "$id": "82",
+      "$id": "76",
       "sourceActivityId": "33fbe383-b052-4548-a31a-c1873b498d39",
       "targetActivityId": "cb22682b-1e18-416c-bdb6-8e5e565b2cd1",
       "outcome": "Done"
     },
     {
-      "$id": "83",
+      "$id": "77",
       "sourceActivityId": "cb22682b-1e18-416c-bdb6-8e5e565b2cd1",
       "targetActivityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
       "outcome": "Done"
     },
     {
-      "$id": "84",
+      "$id": "78",
       "sourceActivityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
       "targetActivityId": "57bb4d74-8059-4fa9-ab50-109b32bdf577",
       "outcome": "Approved"
     },
     {
-      "$id": "85",
+      "$id": "79",
       "sourceActivityId": "f07137ee-b8c3-4e56-a0b9-c82d10ae9b28",
       "targetActivityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
       "outcome": "Done"
     },
     {
-      "$id": "86",
+      "$id": "80",
       "sourceActivityId": "1278a1fd-da9a-48b0-8fc3-c03b44396407",
       "targetActivityId": "e066fb1c-191b-475d-87ca-e40cd30070b8",
       "outcome": "Rejected"
     },
     {
-      "$id": "87",
+      "$id": "81",
       "sourceActivityId": "db31f37e-7750-4750-bc9e-59544de31227",
       "targetActivityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
       "outcome": "Done"
     },
     {
-      "$id": "88",
+      "$id": "82",
       "sourceActivityId": "6c9d235d-ec0a-4c9d-a5ff-7bdc5bfc76df",
       "targetActivityId": "d996bc3d-371d-4910-95ee-c4ac031972cd",
       "outcome": "Done"
     },
     {
-      "$id": "89",
-      "sourceActivityId": "56a51f00-453c-4d38-be34-c3cabc1d8291",
+      "$id": "83",
+      "sourceActivityId": "d996bc3d-371d-4910-95ee-c4ac031972cd",
+      "targetActivityId": "851e7677-c341-42d9-a862-fef3a94a1bff",
+      "outcome": "Done"
+    },
+    {
+      "$id": "84",
+      "sourceActivityId": "b7659da7-b911-4481-ab12-8e925db71a33",
       "targetActivityId": "33fbe383-b052-4548-a31a-c1873b498d39",
       "outcome": "Done"
     },
     {
-      "$id": "90",
+      "$id": "85",
       "sourceActivityId": "57bb4d74-8059-4fa9-ab50-109b32bdf577",
-      "targetActivityId": "62493ef5-be53-4339-9e18-fc315ce867a8",
+      "targetActivityId": "8d2b250b-9989-42fe-9a07-1ec163caaf75",
       "outcome": "Done"
     },
     {
-      "$id": "91",
-      "sourceActivityId": "62493ef5-be53-4339-9e18-fc315ce867a8",
+      "$id": "86",
+      "sourceActivityId": "8d2b250b-9989-42fe-9a07-1ec163caaf75",
       "targetActivityId": "f07137ee-b8c3-4e56-a0b9-c82d10ae9b28",
       "outcome": "Done"
     },
     {
-      "$id": "92",
+      "$id": "87",
       "sourceActivityId": "e066fb1c-191b-475d-87ca-e40cd30070b8",
-      "targetActivityId": "91ed5f5c-ea88-42a8-b0b3-ffebe03dc4a5",
+      "targetActivityId": "a6a16bed-962b-4dde-8eca-5ba4f4e686f2",
       "outcome": "Done"
     },
     {
-      "$id": "93",
-      "sourceActivityId": "91ed5f5c-ea88-42a8-b0b3-ffebe03dc4a5",
+      "$id": "88",
+      "sourceActivityId": "a6a16bed-962b-4dde-8eca-5ba4f4e686f2",
       "targetActivityId": "db31f37e-7750-4750-bc9e-59544de31227",
-      "outcome": "Done"
-    },
-    {
-      "$id": "94",
-      "sourceActivityId": "d996bc3d-371d-4910-95ee-c4ac031972cd",
-      "targetActivityId": "851e7677-c341-42d9-a862-fef3a94a1bff",
       "outcome": "Done"
     }
   ],
-  "id": "e005c6f8a41f4049b862e86692a59fd7"
+  "id": "ba69622b7c0d47c591f694433cbd7d74"
 }

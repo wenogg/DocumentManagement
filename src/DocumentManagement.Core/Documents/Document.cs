@@ -1,4 +1,6 @@
-﻿namespace DocumentManagement.Core.Documents;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DocumentManagement.Core.Documents;
 
 public class Document
 {
@@ -15,4 +17,7 @@ public class Document
     public string? Notes { get; set; }
 
     public DocumentStatus Status { get; set; }
+
+    [NotMapped]
+    public string[] Actions { get; set; } = [];
 }

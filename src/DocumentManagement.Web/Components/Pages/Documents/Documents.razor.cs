@@ -1,10 +1,13 @@
 ﻿using Blazorise;
 using DocumentManagement.Core.Documents;
+using Elsa;
 using Elsa.Activities.Signaling.Services;
+using Elsa.Activities.UserTask.Contracts;
 using Elsa.Models;
+using Elsa.Persistence;
 using Elsa.Services;
+using Elsa.Services.WorkflowStorage;
 using Microsoft.AspNetCore.Components;
-
 
 namespace DocumentManagement.Web.Components.Pages.Documents;
 
@@ -30,6 +33,14 @@ public partial class Documents
     [Inject]
     private ISignaler WorkflowSignaler { get; set; }
 
+    [Inject] IWorkflowInstanceStore WorkflowInstanceStore { get; set; }
+
+    [Inject] IWorkflowStorageService WorkflowStorageService { get; set; }
+
+    [Inject] IWorkflowTriggerInterruptor WorkflowTriggerInterruptor { get; set; }
+
+    [Inject] IUserTaskService UserTaskService { get; set; }
+
     private List<DocumentType> DocumentTypes { get; set; } = [];
 
     private List<Document> Items { get; set; } = [];
@@ -42,6 +53,16 @@ public partial class Documents
     {
         DocumentTypes = (await DocumentTypeStore.List()).ToList();
         Items = await DocumentStore.List();
+
+        foreach (var item in Items)
+        {
+            var workflowInstance = await WorkflowInstanceStore.FindByCorrelationIdAsync(item.Id);
+            if (workflowInstance == null) continue;
+            var actions = (await UserTaskService.GetUserActionsAsync(workflowInstance!.Id)).ToList();
+            if (actions.Count == 0) continue;
+
+            item.Actions = actions.Select(x => x.Action).ToArray();
+        }
         await base.OnInitializedAsync();
     }
 
@@ -69,7 +90,7 @@ public partial class Documents
         using var stream = new MemoryStream();
         await stream.WriteAsync(CreateDocumentDto.File);
         stream.Seek(0, SeekOrigin.Begin);
-        var document = await DocumentService.SaveDocumentAsync(CreateDocumentDto.Name, stream, CreateDocumentDto.DocumentTypeId);
+        await DocumentService.SaveDocumentAsync(CreateDocumentDto.Name, stream, CreateDocumentDto.DocumentTypeId);
 
         ShowUploadSuccess = true;
         CreateDocumentDto = new CreateDocumentDto();
@@ -95,5 +116,15 @@ public partial class Documents
     private async Task ApplyTransition(Document document, string transition)
     {
         await WorkflowSignaler.TriggerSignalAsync(correlationId: document.Id, signal: transition);
+    }
+
+    private async Task SendUserAction(Document document, string action)
+    {
+        var workflowInstance = await WorkflowInstanceStore.FindByCorrelationIdAsync(document.Id);
+        var currentActivity = workflowInstance?.BlockingActivities.FirstOrDefault();
+        if (currentActivity == null) return;
+
+        await WorkflowStorageService.UpdateInputAsync(workflowInstance, new WorkflowInput(action));
+        await WorkflowTriggerInterruptor.InterruptActivityAsync(workflowInstance, currentActivity.ActivityId);
     }
 }

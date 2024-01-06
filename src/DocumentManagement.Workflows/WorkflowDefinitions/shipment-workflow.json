@@ -1,0 +1,326 @@
+{
+  "$id": "1",
+  "definitionId": "e9d8c38358434ec9bb8d35f9a3971475",
+  "versionId": "1fd546639e294e148fe801e17ed372e4",
+  "name": "Shipment Workflow",
+  "displayName": "Shipment Workflow",
+  "version": 1,
+  "variables": {
+    "$id": "2",
+    "data": {}
+  },
+  "customAttributes": {
+    "$id": "3",
+    "data": {}
+  },
+  "isSingleton": false,
+  "persistenceBehavior": "WorkflowBurst",
+  "deleteCompletedInstances": false,
+  "isPublished": true,
+  "isLatest": true,
+  "tag": "Shipment",
+  "createdAt": "2024-01-06T20:07:56.0414737Z",
+  "activities": [
+    {
+      "$id": "4",
+      "activityId": "32e1819d-fc5e-4b86-a318-eef0270447cd",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Set Shipment to Compiling",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "5",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "6",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "7",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "8",
+            "Literal": "Compiling"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "9"
+      }
+    },
+    {
+      "$id": "10",
+      "activityId": "035f365b-347f-4afa-8f32-cf0cc6e8f12a",
+      "type": "UserTask",
+      "displayName": "Compiling Shipment",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "11",
+          "name": "Actions",
+          "expressions": {
+            "$id": "12",
+            "Json": "[\"Send to shipping\",\"Cancel Shipment\"]"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "13"
+      }
+    },
+    {
+      "$id": "14",
+      "activityId": "7ca6bacd-f286-4060-b80e-3f1f664993c2",
+      "type": "ChangeDocumentStatus",
+      "displayName": "Change Document Status",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "15",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "16",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "17",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "18",
+            "Literal": "Shipping"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "19"
+      }
+    },
+    {
+      "$id": "20",
+      "activityId": "3d5d7922-1de6-422d-bf10-461743667577",
+      "type": "UserTask",
+      "name": "PendingShippingReview",
+      "displayName": "Shipping",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "21",
+          "name": "Actions",
+          "expressions": {
+            "$id": "22",
+            "Json": "[\"Complete Shipment\",\"Return to TR\",\"Cancel Shipment\"]"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "23"
+      }
+    },
+    {
+      "$id": "24",
+      "activityId": "7ec14f8e-18c0-4d38-92b0-310468c1b38f",
+      "type": "ChangeDocumentStatus",
+      "name": "SetShipmentCancelled",
+      "displayName": "Set Shipment Cancelled",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "25",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "26",
+            "Literal": "correlationId",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "27",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "28",
+            "Literal": "ShipmentCancelled"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "29"
+      }
+    },
+    {
+      "$id": "30",
+      "activityId": "ba4404c1-5f8f-417d-b032-ae55891ca32b",
+      "type": "WriteLine",
+      "displayName": "Shipment cancelled",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "31",
+          "name": "Text",
+          "expressions": {
+            "$id": "32",
+            "Literal": "Shipment has been cancelled"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "33"
+      }
+    },
+    {
+      "$id": "34",
+      "activityId": "d9533357-b500-4c6a-a34c-49262b0a5f5e",
+      "type": "WriteLine",
+      "displayName": "Write Line",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "35",
+          "name": "Text",
+          "expressions": {
+            "$id": "36",
+            "Literal": "Starting shipment"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "37"
+      }
+    },
+    {
+      "$id": "38",
+      "activityId": "2e4b7246-e0a0-4131-910d-9ddcdc9ebd0d",
+      "type": "ChangeDocumentStatus",
+      "name": "SetShipmentComplete",
+      "displayName": "Set Shipment Complete",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "39",
+          "name": "DocumentId",
+          "syntax": "JavaScript",
+          "expressions": {
+            "$id": "40",
+            "JavaScript": "correlationId"
+          }
+        },
+        {
+          "$id": "41",
+          "name": "DocumentStatus",
+          "expressions": {
+            "$id": "42",
+            "Literal": "Shipped"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "43"
+      }
+    },
+    {
+      "$id": "44",
+      "activityId": "85a78f57-a4f9-4b3f-9f9d-1580dfb8b157",
+      "type": "WriteLine",
+      "displayName": "Shipment Complete",
+      "persistWorkflow": false,
+      "loadWorkflowContext": false,
+      "saveWorkflowContext": false,
+      "properties": [
+        {
+          "$id": "45",
+          "name": "Text",
+          "expressions": {
+            "$id": "46",
+            "Literal": "Shipment complete!"
+          }
+        }
+      ],
+      "propertyStorageProviders": {
+        "$id": "47"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "$id": "48",
+      "sourceActivityId": "32e1819d-fc5e-4b86-a318-eef0270447cd",
+      "targetActivityId": "035f365b-347f-4afa-8f32-cf0cc6e8f12a",
+      "outcome": "Done"
+    },
+    {
+      "$id": "49",
+      "sourceActivityId": "035f365b-347f-4afa-8f32-cf0cc6e8f12a",
+      "targetActivityId": "7ca6bacd-f286-4060-b80e-3f1f664993c2",
+      "outcome": "Send to shipping"
+    },
+    {
+      "$id": "50",
+      "sourceActivityId": "7ca6bacd-f286-4060-b80e-3f1f664993c2",
+      "targetActivityId": "3d5d7922-1de6-422d-bf10-461743667577",
+      "outcome": "Done"
+    },
+    {
+      "$id": "51",
+      "sourceActivityId": "035f365b-347f-4afa-8f32-cf0cc6e8f12a",
+      "targetActivityId": "7ec14f8e-18c0-4d38-92b0-310468c1b38f",
+      "outcome": "Cancel Shipment"
+    },
+    {
+      "$id": "52",
+      "sourceActivityId": "7ec14f8e-18c0-4d38-92b0-310468c1b38f",
+      "targetActivityId": "ba4404c1-5f8f-417d-b032-ae55891ca32b",
+      "outcome": "Done"
+    },
+    {
+      "$id": "53",
+      "sourceActivityId": "3d5d7922-1de6-422d-bf10-461743667577",
+      "targetActivityId": "7ec14f8e-18c0-4d38-92b0-310468c1b38f",
+      "outcome": "Cancel Shipment"
+    },
+    {
+      "$id": "54",
+      "sourceActivityId": "3d5d7922-1de6-422d-bf10-461743667577",
+      "targetActivityId": "32e1819d-fc5e-4b86-a318-eef0270447cd",
+      "outcome": "Return to TR"
+    },
+    {
+      "$id": "55",
+      "sourceActivityId": "d9533357-b500-4c6a-a34c-49262b0a5f5e",
+      "targetActivityId": "32e1819d-fc5e-4b86-a318-eef0270447cd",
+      "outcome": "Done"
+    },
+    {
+      "$id": "56",
+      "sourceActivityId": "3d5d7922-1de6-422d-bf10-461743667577",
+      "targetActivityId": "2e4b7246-e0a0-4131-910d-9ddcdc9ebd0d",
+      "outcome": "Complete Shipment"
+    },
+    {
+      "$id": "57",
+      "sourceActivityId": "2e4b7246-e0a0-4131-910d-9ddcdc9ebd0d",
+      "targetActivityId": "85a78f57-a4f9-4b3f-9f9d-1580dfb8b157",
+      "outcome": "Done"
+    }
+  ],
+  "id": "1fd546639e294e148fe801e17ed372e4"
+}

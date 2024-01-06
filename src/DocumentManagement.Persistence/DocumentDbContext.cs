@@ -14,7 +14,8 @@ public class DocumentDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<DocumentType>().HasData(
             CreateDocumentType("ChangeRequest", "Change Request"),
             CreateDocumentType("LeaveRequest", "Leave Request"),
-            CreateDocumentType("IdentityVerification", "Identity Verification"));
+            CreateDocumentType("IdentityVerification", "Identity Verification"),
+            CreateDocumentType("Shipment", "Shipment"));
     }
 
     private static DocumentType CreateDocumentType(string id, string name) => new()

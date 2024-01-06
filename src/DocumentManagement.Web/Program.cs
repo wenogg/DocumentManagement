@@ -96,7 +96,8 @@ app.UseHttpActivities();
 
 app.MapControllers();
 app.UseAntiforgery();
-
+app.UseSwagger();
+app.UseSwaggerUI();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

@@ -2,6 +2,7 @@
 using DocumentManagement.Workflows.Handlers;
 using DocumentManagement.Workflows.Scripting.JavaScript;
 using Elsa;
+using Elsa.Activities.UserTask.Extensions;
 using Elsa.Persistence.EntityFramework.Core.Extensions;
 using Elsa.Providers.Workflows;
 using Elsa.Server.Hangfire.Extensions;
@@ -40,6 +41,7 @@ public static class ServiceCollectionExtensions
                 .AddHttpActivities(elsaSection.GetSection("Server").Bind)
                 .AddEmailActivities(elsaSection.GetSection("Smtp").Bind)
                 .AddActivitiesFrom<GetDocument>()
+                .AddUserTaskActivities()
             );
 
 
